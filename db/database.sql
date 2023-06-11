@@ -2,6 +2,7 @@ CREATE DATABASE portfolio;
 
 CREATE TABLE blog (id SERIAL PRIMARY KEY, title TEXT NOT NULL, content TEXT NOT NULL);
 CREATE TABLE comment (id SERIAL PRIMARY KEY, blog_id INTEGER REFERENCES blog(id), content TEXT);
+CREATE TABLE users (name TEXT NOT NULL, email TEXT PRIMARY KEY, password TEXT NOT NULL);
 
 
 

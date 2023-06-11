@@ -1,13 +1,15 @@
-// import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
 
-// const saltRounds = 10;
+const saltRounds = 10;
 
-// export const hash = (plainText) => {
-//   const hashedValue = bcrypt.hashSync(plainText, saltRounds);
-//   return hashedValue;
-// };
+const hash = (plainText) => {
+  const hashedValue = bcrypt.hashSync(plainText, saltRounds);
+  return hashedValue;
+};
 
-// export const compareHash = (plainText, existingHash) => {
-//   const result = bcrypt.compareSync(plainText, existingHash);
-//   return result;
-// };
+const compareHash = (plainText, existingHash) => {
+  const result = bcrypt.compareSync(plainText, existingHash);
+  return result;
+};
+
+module.exports = { hash, compareHash };
