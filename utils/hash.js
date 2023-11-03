@@ -8,6 +8,7 @@ const hash = (plainText) => {
 };
 
 const compareHash = (plainText, existingHash) => {
+  console.log(plainText, existingHash);
   const result = bcrypt.compareSync(plainText, existingHash);
   return result;
 };

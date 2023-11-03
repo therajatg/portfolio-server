@@ -5,13 +5,18 @@ const cookieParser = require("cookie-parser");
 const { blogsRouter } = require("./routers/blogsRouter");
 const { commentsRouter } = require("./routers/commentsRouter");
 const { authRouter } = require("./routers/authRouter");
-
 const cors = require("cors");
-const { verify } = require("./utils/jwtservice");
+const { verify, sign } = require("./utils/jwtservice");
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
-app.use(cors({ origin: "*" }));
+
 app.use(express.json());
 
 // app.use((req, res, next) => {
@@ -32,4 +37,22 @@ app.use("/api/blogs", blogsRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/auth", authRouter);
 
-app.listen(5000, "192.168.29.12", () => console.log("Server Started"));
+app.get("/api/refresh", (req, res) => {
+  try {
+    const refreshTokenVerified = verify(req.refreshToken);
+    if (refreshTokenVerified) {
+      const accessToken = sign({
+        name: refreshTokenVerified.name,
+        email: refreshTokenVerified.email,
+      });
+      res.status(200).json({ accessToken, name: refreshTokenVerified.name });
+    } else {
+      //   res.status(403).send("Token not valid");
+      res.end();
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.listen(5000, () => console.log("Server Started"));

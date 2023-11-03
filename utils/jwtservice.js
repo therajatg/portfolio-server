@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const sign = (payload) => {
+const sign = (type, payload) => {
   return jwt.sign(payload, process.env.JWT_KEY, {
-    expiresIn: "3 hours",
+    expiresIn: type === "access" ? "2 hours" : "24 hours",
   });
 };
 
